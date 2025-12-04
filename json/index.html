@@ -22,7 +22,6 @@
             import { EditorView, basicSetup } from "https://esm.sh/codemirror@6.0.2";
             import { json } from "https://esm.sh/@codemirror/lang-json@6.0.2"
 
-
             const view = new EditorView({
               parent: document.getElementById("json-editor"),
               mode: "application/json",
@@ -56,6 +55,8 @@
                 json(),
               ]
             })
+
+            view.focus()
         </script>
 
         <div class="json-container">

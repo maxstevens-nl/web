@@ -20,7 +20,113 @@
     <body>
         <script type="module">
             import { EditorView, basicSetup } from "https://esm.sh/codemirror@6.0.2";
+            import { HighlightStyle, syntaxHighlighting, } from 'https://esm.sh/@codemirror/language@6.11.3';
             import { json } from "https://esm.sh/@codemirror/lang-json@6.0.2"
+            import { tags as t } from 'https://esm.sh/@lezer/highlight@1.2.3';
+
+            const createTheme = ({ variant, settings, styles }) => {
+                const theme = EditorView.theme({
+                    '&': {
+                        backgroundColor: settings.background,
+                        color: settings.foreground,
+                    },
+                    '.cm-content': {
+                        caretColor: settings.caret,
+                    },
+                    '.cm-cursor, .cm-dropCursor': {
+                        borderLeftColor: settings.caret,
+                    },
+                    '&.cm-focused .cm-selectionBackgroundm .cm-selectionBackground, .cm-content ::selection': {
+                        backgroundColor: settings.selection,
+                    },
+                    '.cm-activeLine': {
+                        backgroundColor: settings.lineHighlight,
+                    },
+                    '.cm-gutters': {
+                        backgroundColor: settings.gutterBackground,
+                        color: settings.gutterForeground,
+                    },
+                    '.cm-activeLineGutter': {
+                        backgroundColor: settings.lineHighlight,
+                    },
+                }, {
+                    dark: variant === 'dark',
+                });
+                const highlightStyle = HighlightStyle.define(styles);
+                const extension = [theme, syntaxHighlighting(highlightStyle)];
+                return extension;
+            };
+
+            const bluloco = createTheme({
+                variant: 'dark',
+                settings: {
+                    background: '#282c34',
+                    foreground: '#abb2bf',
+                    caret: '#ffcc00',
+                    selection: '#274670',
+                    lineHighlight: '#8a91991a',
+                    gutterBackground: '#282c34',
+                    gutterForeground: '#636d83',
+                },
+                styles: [
+                    {
+                        tag: t.comment,
+                        color: '#636d83',
+                    },
+                    {
+                        tag: t.variableName,
+                        color: '#abb2bf',
+                    },
+                    {
+                        tag: [t.string, t.special(t.brace)],
+                        color: '#f9c859',
+                    },
+                    {
+                        tag: t.number,
+                        color: '#ff78f8',
+                    },
+                    {
+                        tag: t.bool,
+                        color: '#10b1fe',
+                    },
+                    {
+                        tag: t.null,
+                        color: '#10b1fe',
+                    },
+                    {
+                        tag: t.keyword,
+                        color: '#10b1fe',
+                    },
+                    {
+                        tag: t.operator,
+                        color: '#7a82da',
+                    },
+                    {
+                        tag: t.className,
+                        color: '#ff6480',
+                    },
+                    {
+                        tag: t.definition(t.typeName),
+                        color: '#ff6480',
+                    },
+                    {
+                        tag: t.typeName,
+                        color: '#ff6480',
+                    },
+                    {
+                        tag: t.angleBracket,
+                        color: '#3691ff',
+                    },
+                    {
+                        tag: t.tagName,
+                        color: '#3691ff',
+                    },
+                    {
+                        tag: t.attributeName,
+                        color: '#ff936a',
+                    },
+                ],
+            });
 
             const view = new EditorView({
               parent: document.getElementById("json-editor"),
@@ -28,6 +134,7 @@
               extensions: [
                 basicSetup, 
                 json(),
+                bluloco,
                 EditorView.theme({
                   "&": { height: "100%" }
                 }),
@@ -53,6 +160,10 @@
               extensions: [
                 basicSetup, 
                 json(),
+                bluloco,
+                EditorView.theme({
+                  "&": { height: "100%" }
+                }),
               ]
             })
 

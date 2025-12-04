@@ -1,0 +1,66 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>JSON-formatter | Max Stevens</title>
+        <link rel="stylesheet" href="/style.css">
+        <style>
+            .json-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                height: 100%;
+            }
+
+            .json-editor {
+                height: 100%;
+                overflow-y: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import { EditorView, basicSetup } from "https://esm.sh/codemirror@6.0.2";
+            import { json } from "https://esm.sh/@codemirror/lang-json@6.0.2"
+
+
+            const view = new EditorView({
+              parent: document.getElementById("json-editor"),
+              mode: "application/json",
+              extensions: [
+                basicSetup, 
+                json(),
+                EditorView.theme({
+                  "&": { height: "100%" }
+                }),
+                EditorView.updateListener.of((update) => {
+                    if (update.docChanged) {
+                      const newContent = update.state.doc.toString()
+
+                      view2.dispatch({
+                        changes: {
+                          from: 0,
+                          to: view2.state.doc.length,
+                          insert: newContent === '' ? '' : JSON.stringify(JSON.parse(newContent), null, 4)
+                        }
+                      })
+                    }
+                }),
+              ]
+            })
+
+            const view2 = new EditorView({
+              parent: document.getElementById("json-result"),
+              mode: "application/json",
+              extensions: [
+                basicSetup, 
+                json(),
+              ]
+            })
+        </script>
+
+        <div class="json-container">
+            <div class="json-editor" id="json-editor"></div>
+            <div class="json-editor" id="json-result"></div>
+        </div>
+    </body>
+</html>

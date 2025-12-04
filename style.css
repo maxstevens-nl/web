@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400..700&display=swap');
+
+body {
+    margin: 40px auto;
+    padding: 0 10px;
+    font-family: "Monda", sans-serif;
+    font-size: 13px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+a {
+    color: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color:#c9d1d9;
+    background:#0d1117
+  }
+  a:link {
+    color:#58a6ff
+  }
+  a:visited {
+    color:#8e96f0
+  }
+}
+
